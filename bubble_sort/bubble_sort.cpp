@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
-#include <mkl_vsl.h>
 
 void buble_sort_for_for_index(int n, int* tab)
 {
@@ -36,7 +35,7 @@ void cout_array(int n, int* tab)
 {
     if (n > 30)
     {
-        std::cout << "Array length is over 30 elements, the console will show only 30 elements" << std::endl;
+        std::cout << "\nArray length is over 30 elements, the console will show only 30 elements" << std::endl;
         n = 30;
     }
     std::cout<<"\nArray:"<<std::endl;
@@ -190,6 +189,29 @@ int* generate_array_by_random_min_max(int n,int min,int max)
     }
     return tab;
 }
+
+void przetestuj(int n, void (*sorting_func)(int, int*))
+{
+    int* tab =generate_array_by_rand_min_max(n,10,100);
+    
+    if(check_if_sorted(n,tab))
+    {
+        std::cout<<"\nArray was already sorted";
+        return;
+    }
+    
+    sorting_func(n,tab);
+    
+    if(!check_if_sorted(n,tab))
+    {
+        std::cout<<"\nArray is not sorted";
+        return;
+    }
+    std::cout<<"\nArray is sorted";
+    
+    cout_array(n,tab);
+    
+}
     
 // int* generate_array_by_intel_min_max(int n,int min,int max)
 // {
@@ -210,13 +232,13 @@ int* generate_array_by_random_min_max(int n,int min,int max)
 int main()
 {
     int n = 50;
-    int* tab = new int[n];
+    //int* tab = new int[n];
     
-    do{
-        tab = generate_array_by_intel_min_max(n,0,100);
-    }while(check_if_sorted(n,tab));
+    // do{
+    //     tab = generate_array_by_random_min_max(n,0,100);
+    // }while(check_if_sorted(n,tab));
     
-    cout_array(n,tab);
+    przetestuj(n,&buble_sort_for_shorten_for_pointer);
     
 
     //buble_sort_for_for_index(n, tab);
@@ -225,15 +247,15 @@ int main()
     
     //buble_sort_for_for_pointer(n, tab);
     //buble_sort_while_for_pointer(n, tab);
-    buble_sort_for_shorten_for_pointer(n, tab);
+    // buble_sort_for_shorten_for_pointer(n, tab);
     
 
-    if (!check_if_sorted(n, tab))
-    {
-        std::cout << "Failed to sort array";
-        return 1;
-    }
-    std::cout << "\nArray is sorted propery" << std::endl;
+    // if (!check_if_sorted(n, tab))
+    // {
+    //     std::cout << "Failed to sort array";
+    //     return 1;
+    // }
+    // std::cout << "\nArray is sorted propery" << std::endl;
 
-    cout_array(n, tab);
+    // cout_array(n, tab);
 }
