@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 
-void buble_sort_for_for(int n, int* tab)
+void buble_sort_for_for_index(int n, int* tab)
 {
     for (int i = 0; i < n; i++)
     {
@@ -77,16 +77,91 @@ void buble_sort_for_shorten_for_index(int n, int* tab)
     }
 }
 
+void buble_sort_for_for_pointer(int n, int* tab)
+{
+    int *w1,*w2,temp;
+    for(int i=0;i<n;i++)
+    {
+        w1 = tab;
+        w2 = w1 + 1;
+        for(int j=0;j<n-1;j++)
+        {
+            if(*w1>*w2)
+            {
+                temp = *w2;
+                *w2 = *w1;
+                *w1 = temp;
+            }
+        w1++;
+        w2++;
+        }
+    }
+}
+
+void buble_sort_while_for_pointer(int n, int* tab)
+{
+    bool zamiana = true;
+    int *w1,*w2,temp;
+    while (zamiana)
+    {
+        zamiana = false;
+        w1 = tab;
+        w2 = w1+1;
+        
+        for (int i = 0; i < n - 1; i++)
+        {
+            if (*w1 > *w2)
+            {
+                zamiana = true;
+                temp = *w1;
+                *w1 = *w2;
+                *w2 = temp;
+            }
+            w1++;
+            w2++;
+        }
+    }
+}
+
+void buble_sort_for_shorten_for_pointer(int n, int* tab)
+{
+    int *w1,*w2,temp;
+    for (int i = 0; i < n; i++)
+    {
+        w1 = tab;
+        w2 = w1 +1;
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (*w1>*w2)
+            {
+                temp = *w1;
+                *w1 = *w2;
+                *w2 = temp;
+            }
+            w1++;
+            w2++;
+        }
+    }
+}
+
+int[50] generate_array_by_random(int n)
+{
+    
+}
+
 int main()
 {
     int n = 50;
     int* tab = new int[n] { 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
-    buble_sort_for_for(n, tab);
+    //buble_sort_for_for_index(n, tab);
     //buble_sort_while_for_index(n, tab);
     //buble_sort_for_shorten_for_index(n, tab);
-
-
+    
+    //buble_sort_for_for_pointer(n, tab);
+    //buble_sort_while_for_pointer(n, tab);
+    //buble_sort_for_shorten_for_pointer(n, tab);
+    
 
     if (!check_if_sorted(n, tab))
     {
