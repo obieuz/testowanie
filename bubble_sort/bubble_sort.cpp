@@ -1,4 +1,8 @@
-﻿#include <iostream>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <random>
+#include <mkl_vsl.h>
 
 void buble_sort_for_for_index(int n, int* tab)
 {
@@ -38,7 +42,7 @@ void cout_array(int n, int* tab)
     std::cout<<"\nArray:"<<std::endl;
     for (int i = 0; i < n; i++)
     {
-        std::cout << tab[i] << std::endl;
+        std::cout << i<< "\t" << tab[i] << std::endl;
     }
 }
 
@@ -144,15 +148,76 @@ void buble_sort_for_shorten_for_pointer(int n, int* tab)
     }
 }
 
-int[50] generate_array_by_random(int n)
+int* generate_array_by_rand_min_max(int n,int min,int max)
 {
+    srand(time(0));
     
+    int* tab = new int[n];
+    
+    for(int i=0;i<n;i++)
+    {
+        tab[i]=(rand()%(max-min+1)) + min;
+    }
+    return tab;
 }
+
+int* generate_array_by_rand(int n)
+{
+    srand(time(0));
+    
+    int* tab = new int[n];
+    
+    for(int i=0;i<n;i++)
+    {
+        tab[i]=rand();
+    }
+    return tab;
+}
+
+int* generate_array_by_random_min_max(int n,int min,int max)
+{
+    std::random_device rd;
+    
+    std::mt19937 gen(rd());
+
+    std::uniform_int_distribution<> distrib(min, max);
+    
+    int* tab = new int[n];
+    
+    for(int i=0;i<n;i++)
+    {
+        tab[i]=distrib(gen);
+    }
+    return tab;
+}
+    
+// int* generate_array_by_intel_min_max(int n,int min,int max)
+// {
+//     int* tab = new int[n];
+        
+//     VSLStreamStatePtr stream;
+//     vslNewStream(&stream, VSL_BRNG_MT19937, 0);
+    
+//     viRngUniform(VSL_RNG_METHOD_UNIFORM_STD, stream, n, tab, min, max);
+
+//     std::uniform_int_distribution<> distrib(min, max);
+
+//     return tab;
+    
+//     cout_array(n,tab);
+// }
 
 int main()
 {
     int n = 50;
-    int* tab = new int[n] { 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+    int* tab = new int[n];
+    
+    do{
+        tab = generate_array_by_intel_min_max(n,0,100);
+    }while(check_if_sorted(n,tab));
+    
+    cout_array(n,tab);
+    
 
     //buble_sort_for_for_index(n, tab);
     //buble_sort_while_for_index(n, tab);
@@ -160,7 +225,7 @@ int main()
     
     //buble_sort_for_for_pointer(n, tab);
     //buble_sort_while_for_pointer(n, tab);
-    //buble_sort_for_shorten_for_pointer(n, tab);
+    buble_sort_for_shorten_for_pointer(n, tab);
     
 
     if (!check_if_sorted(n, tab))
