@@ -235,55 +235,48 @@ void przetestuj(void (*sorting_func)(int, T*), int n,const char* func_name)
     // cout_array(n,tab);
 }
 template <typename T>
-void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_name, T* tab)
+void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_name, T tab)
 {
+    //skonczyc
     auto start = std::chrono::high_resolution_clock::now();
     
-    if(check_if_sorted(n,tab))
+    if(check_if_sorted(n, tab))
     {
         std::cout<<"\nArray was already sorted";
         return;
     }
     
-    sorting_func(n,tab);
+    sorting_func(n, tab);
     
     auto end = std::chrono::high_resolution_clock::now();
     
-    if(!check_if_sorted(n,tab))
+    if(!check_if_sorted(n, tab))
     {
         std::cout<<std::endl<<func_name<<" is not sorted";
         return;
     }
      auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-    // std::cout<<"\nArray is sorted";
-
     std::cout<<std::endl<<func_name<<" "<<duration.count()<<" milliseconds";
     
-    // cout_array(n,tab);
 }
 template <typename T>
 void przetestuj_all(int n)
 {
-    T* tab = generate_array_by_rand(n);
-    
-    przetestuj_z_tablica<T>(&buble_sort_for_for_index<T>,n,FUNCTION_NAME(buble_sort_for_for_index), tab);
-    
-    przetestuj_z_tablica<T>(&buble_sort_while_for_index<T>,n,FUNCTION_NAME(buble_sort_while_for_index), tab);
-    
-    przetestuj_z_tablica<T>(&buble_sort_for_shorten_for_index<T>,n,FUNCTION_NAME(buble_sort_for_shorten_for_index), tab);
-    
-    przetestuj_z_tablica<T>(&buble_sort_for_for_pointer<T>,n,FUNCTION_NAME(buble_sort_for_for_pointer), tab);
-    
-    przetestuj_z_tablica<T>(&buble_sort_while_for_pointer<T>,n,FUNCTION_NAME(buble_sort_while_for_pointer), tab);
-    
-    przetestuj_z_tablica<T>(&buble_sort_for_shorten_for_pointer<T>,n,FUNCTION_NAME(buble_sort_for_shorten_for_pointer), tab);
+    std::cout<<"\nArray length: "<<n<<std::endl;
+
+    przetestuj<T>(&buble_sort_for_for_index<T>, n, FUNCTION_NAME(buble_sort_for_for_index));
+    przetestuj<T>(&buble_sort_for_for_pointer<T>, n, FUNCTION_NAME(buble_sort_for_for_pointer));
+    przetestuj<T>(&buble_sort_for_shorten_for_index<T>, n, FUNCTION_NAME(buble_sort_for_shorten_for_index));
+    przetestuj<T>(&buble_sort_for_shorten_for_pointer<T>, n, FUNCTION_NAME(buble_sort_for_shorten_for_pointer));
+    przetestuj<T>(&buble_sort_while_for_index<T>, n, FUNCTION_NAME(buble_sort_while_for_index));
+    przetestuj<T>(&buble_sort_while_for_pointer<T>,n,FUNCTION_NAME(buble_sort_while_for_pointer));
 }
 
 int main()
 {
     int n = 10000;
     
-    przetestuj_all<double>(n);
+    przetestuj_all<int>(n);
     
 }
