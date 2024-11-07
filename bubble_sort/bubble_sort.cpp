@@ -2,8 +2,12 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include <chrono>
 
-void buble_sort_for_for_index(int n, int* tab)
+#define FUNCTION_NAME(func) #func
+
+template <typename T>
+void buble_sort_for_for_index(int n, T* tab)
 {
     for (int i = 0; i < n; i++)
     {
@@ -19,7 +23,8 @@ void buble_sort_for_for_index(int n, int* tab)
     }
 }
 
-bool check_if_sorted(int n, int* tab)
+template <typename T>
+bool check_if_sorted(int n, T* tab)
 {
     for (int i = 0; i < n - 1; i++)
     {
@@ -31,7 +36,8 @@ bool check_if_sorted(int n, int* tab)
     return true;
 }
 
-void cout_array(int n, int* tab)
+template <typename T>
+void cout_array(int n, T* tab)
 {
     if (n > 30)
     {
@@ -45,7 +51,8 @@ void cout_array(int n, int* tab)
     }
 }
 
-void buble_sort_while_for_index(int n, int* tab)
+template <typename T>
+void buble_sort_while_for_index(int n, T* tab)
 {
     bool zamiana = true;
     while (zamiana)
@@ -64,7 +71,8 @@ void buble_sort_while_for_index(int n, int* tab)
     }
 }
 
-void buble_sort_for_shorten_for_index(int n, int* tab)
+template <typename T>
+void buble_sort_for_shorten_for_index(int n, T* tab)
 {
     for (int i = 0; i < n; i++)
     {
@@ -80,9 +88,10 @@ void buble_sort_for_shorten_for_index(int n, int* tab)
     }
 }
 
-void buble_sort_for_for_pointer(int n, int* tab)
+template <typename T>
+void buble_sort_for_for_pointer(int n, T* tab)
 {
-    int *w1,*w2,temp;
+    T *w1,*w2,temp;
     for(int i=0;i<n;i++)
     {
         w1 = tab;
@@ -101,10 +110,11 @@ void buble_sort_for_for_pointer(int n, int* tab)
     }
 }
 
-void buble_sort_while_for_pointer(int n, int* tab)
+template <typename T>
+void buble_sort_while_for_pointer(int n, T* tab)
 {
     bool zamiana = true;
-    int *w1,*w2,temp;
+    T *w1,*w2,temp;
     while (zamiana)
     {
         zamiana = false;
@@ -126,9 +136,10 @@ void buble_sort_while_for_pointer(int n, int* tab)
     }
 }
 
-void buble_sort_for_shorten_for_pointer(int n, int* tab)
+template <typename T>
+void buble_sort_for_shorten_for_pointer(int n, T* tab)
 {
-    int *w1,*w2,temp;
+    T *w1,*w2,temp;
     for (int i = 0; i < n; i++)
     {
         w1 = tab;
@@ -147,11 +158,12 @@ void buble_sort_for_shorten_for_pointer(int n, int* tab)
     }
 }
 
-int* generate_array_by_rand_min_max(int n,int min,int max)
+template <typename T>
+T* generate_array_by_rand_min_max(int n,int min,int max)
 {
     srand(time(0));
     
-    int* tab = new int[n];
+    T* tab = new T[n];
     
     for(int i=0;i<n;i++)
     {
@@ -160,11 +172,12 @@ int* generate_array_by_rand_min_max(int n,int min,int max)
     return tab;
 }
 
-int* generate_array_by_rand(int n)
+template <typename T>
+T* generate_array_by_rand(int n)
 {
     srand(time(0));
     
-    int* tab = new int[n];
+    T* tab = new T[n];
     
     for(int i=0;i<n;i++)
     {
@@ -173,7 +186,8 @@ int* generate_array_by_rand(int n)
     return tab;
 }
 
-int* generate_array_by_random_min_max(int n,int min,int max)
+template <typename T>
+T* generate_array_by_random_min_max(int n,T min,T max)
 {
     std::random_device rd;
     
@@ -181,7 +195,7 @@ int* generate_array_by_random_min_max(int n,int min,int max)
 
     std::uniform_int_distribution<> distrib(min, max);
     
-    int* tab = new int[n];
+    T* tab = new T[n];
     
     for(int i=0;i<n;i++)
     {
@@ -190,9 +204,12 @@ int* generate_array_by_random_min_max(int n,int min,int max)
     return tab;
 }
 
-void przetestuj(int n, void (*sorting_func)(int, int*))
+template <typename T>
+void przetestuj(void (*sorting_func)(int, T*), int n,const char* func_name)
 {
-    int* tab =generate_array_by_rand_min_max(n,10,100);
+    auto start = std::chrono::high_resolution_clock::now();
+    
+    T* tab = generate_array_by_rand<T>(n);
     
     if(check_if_sorted(n,tab))
     {
@@ -202,60 +219,71 @@ void przetestuj(int n, void (*sorting_func)(int, int*))
     
     sorting_func(n,tab);
     
+    auto end = std::chrono::high_resolution_clock::now();
+    
     if(!check_if_sorted(n,tab))
     {
-        std::cout<<"\nArray is not sorted";
+        std::cout<<std::endl<<func_name<<" is not sorted";
         return;
     }
-    std::cout<<"\nArray is sorted";
+     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    // std::cout<<"\nArray is sorted";
+
+    std::cout<<std::endl<<func_name<<" "<<duration.count()<<" milliseconds";
     
-    cout_array(n,tab);
-    
+    // cout_array(n,tab);
 }
+template <typename T>
+void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_name, T* tab)
+{
+    auto start = std::chrono::high_resolution_clock::now();
     
-// int* generate_array_by_intel_min_max(int n,int min,int max)
-// {
-//     int* tab = new int[n];
-        
-//     VSLStreamStatePtr stream;
-//     vslNewStream(&stream, VSL_BRNG_MT19937, 0);
+    if(check_if_sorted(n,tab))
+    {
+        std::cout<<"\nArray was already sorted";
+        return;
+    }
     
-//     viRngUniform(VSL_RNG_METHOD_UNIFORM_STD, stream, n, tab, min, max);
+    sorting_func(n,tab);
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    
+    if(!check_if_sorted(n,tab))
+    {
+        std::cout<<std::endl<<func_name<<" is not sorted";
+        return;
+    }
+     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-//     std::uniform_int_distribution<> distrib(min, max);
+    // std::cout<<"\nArray is sorted";
 
-//     return tab;
+    std::cout<<std::endl<<func_name<<" "<<duration.count()<<" milliseconds";
     
-//     cout_array(n,tab);
-// }
+    // cout_array(n,tab);
+}
+template <typename T>
+void przetestuj_all(int n)
+{
+    T* tab = generate_array_by_rand(n);
+    
+    przetestuj_z_tablica<T>(&buble_sort_for_for_index<T>,n,FUNCTION_NAME(buble_sort_for_for_index), tab);
+    
+    przetestuj_z_tablica<T>(&buble_sort_while_for_index<T>,n,FUNCTION_NAME(buble_sort_while_for_index), tab);
+    
+    przetestuj_z_tablica<T>(&buble_sort_for_shorten_for_index<T>,n,FUNCTION_NAME(buble_sort_for_shorten_for_index), tab);
+    
+    przetestuj_z_tablica<T>(&buble_sort_for_for_pointer<T>,n,FUNCTION_NAME(buble_sort_for_for_pointer), tab);
+    
+    przetestuj_z_tablica<T>(&buble_sort_while_for_pointer<T>,n,FUNCTION_NAME(buble_sort_while_for_pointer), tab);
+    
+    przetestuj_z_tablica<T>(&buble_sort_for_shorten_for_pointer<T>,n,FUNCTION_NAME(buble_sort_for_shorten_for_pointer), tab);
+}
 
 int main()
 {
-    int n = 50;
-    //int* tab = new int[n];
+    int n = 10000;
     
-    // do{
-    //     tab = generate_array_by_random_min_max(n,0,100);
-    // }while(check_if_sorted(n,tab));
+    przetestuj_all<double>(n);
     
-    przetestuj(n,&buble_sort_for_shorten_for_pointer);
-    
-
-    //buble_sort_for_for_index(n, tab);
-    //buble_sort_while_for_index(n, tab);
-    //buble_sort_for_shorten_for_index(n, tab);
-    
-    //buble_sort_for_for_pointer(n, tab);
-    //buble_sort_while_for_pointer(n, tab);
-    // buble_sort_for_shorten_for_pointer(n, tab);
-    
-
-    // if (!check_if_sorted(n, tab))
-    // {
-    //     std::cout << "Failed to sort array";
-    //     return 1;
-    // }
-    // std::cout << "\nArray is sorted propery" << std::endl;
-
-    // cout_array(n, tab);
 }
