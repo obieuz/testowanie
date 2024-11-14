@@ -7,6 +7,13 @@
 #define FUNCTION_NAME(func) #func
 
 template <typename T>
+void copyArray(T* source, T* destination, int size) {
+    for (int i = 0; i < size; ++i) {
+        destination[i] = source[i];
+    }
+}
+
+template <typename T>
 void buble_sort_for_for_index(int n, T* tab)
 {
     for (int i = 0; i < n; i++)
@@ -237,7 +244,6 @@ void przetestuj(void (*sorting_func)(int, T*), int n,const char* func_name)
 template <typename T>
 void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_name, T tab)
 {
-    //skonczyc
     auto start = std::chrono::high_resolution_clock::now();
     
     if(check_if_sorted(n, tab))
@@ -271,6 +277,33 @@ void przetestuj_all(int n)
     przetestuj<T>(&buble_sort_for_shorten_for_pointer<T>, n, FUNCTION_NAME(buble_sort_for_shorten_for_pointer));
     przetestuj<T>(&buble_sort_while_for_index<T>, n, FUNCTION_NAME(buble_sort_while_for_index));
     przetestuj<T>(&buble_sort_while_for_pointer<T>,n,FUNCTION_NAME(buble_sort_while_for_pointer));
+}
+
+template <typename T>
+void przetestuj_all_z_tablica(int n)
+{
+    std::cout << "\nArray length: " << n << std::endl;
+
+    T* tab = generate_array_by_rand<T>(n);
+    T* copied = new T[n];
+
+    copyArray(tab, copied, n);
+    przetestuj_z_tablica<T>(&buble_sort_for_for_index<T>, n, FUNCTION_NAME(buble_sort_for_for_index), copied);
+
+    copyArray(tab, copied, n);
+    przetestuj_z_tablica<T>(&buble_sort_for_for_pointer<T>, n, FUNCTION_NAME(buble_sort_for_for_pointer), copied);
+
+    copyArray(tab, copied, n);
+    przetestuj_z_tablica<T>(&buble_sort_for_shorten_for_index<T>, n, FUNCTION_NAME(buble_sort_for_shorten_for_index), copied);
+
+    copyArray(tab, copied, n);
+    przetestuj_z_tablica<T>(&buble_sort_for_shorten_for_pointer<T>, n, FUNCTION_NAME(buble_sort_for_shorten_for_pointer), copied);
+
+    copyArray(tab, copied, n);
+    przetestuj_z_tablica<T>(&buble_sort_while_for_index<T>, n, FUNCTION_NAME(buble_sort_while_for_index), copied);
+
+    copyArray(tab, copied, n);
+    przetestuj_z_tablica<T>(&buble_sort_while_for_pointer<T>, n, FUNCTION_NAME(buble_sort_while_for_pointer),copied);
 }
 
 int main()
