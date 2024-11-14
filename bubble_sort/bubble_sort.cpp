@@ -241,8 +241,9 @@ void przetestuj(void (*sorting_func)(int, T*), int n,const char* func_name)
     
     // cout_array(n,tab);
 }
+
 template <typename T>
-void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_name, T tab)
+void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_name, T* tab)
 {
     auto start = std::chrono::high_resolution_clock::now();
     
@@ -266,6 +267,7 @@ void przetestuj_z_tablica(void (*sorting_func)(int, T*), int n,const char* func_
     std::cout<<std::endl<<func_name<<" "<<duration.count()<<" milliseconds";
     
 }
+
 template <typename T>
 void przetestuj_all(int n)
 {
@@ -310,6 +312,6 @@ int main()
 {
     int n = 10000;
     
-    przetestuj_all<int>(n);
+    przetestuj_all_z_tablica<int>(n);
     
 }
