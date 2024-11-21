@@ -9,7 +9,7 @@ void bubble_sort_for_for_index(size_t n, T* tab)
         {
             if (tab[i] < tab[j])
             {
-                int savedValueFromFirstArray = tab[i];
+                T savedValueFromFirstArray = tab[i];
                 tab[i] = tab[j];
                 tab[j] = savedValueFromFirstArray;
             }
@@ -29,7 +29,7 @@ void bubble_sort_while_for_index(size_t n, T* tab)
             if (tab[i] > tab[i + 1])
             {
                 zamiana = true;
-                int savedValueFromElement = tab[i];
+                T savedValueFromElement = tab[i];
                 tab[i] = tab[i + 1];
                 tab[i + 1] = savedValueFromElement;
             }
@@ -46,7 +46,7 @@ void bubble_sort_for_shorten_for_index(size_t n, T* tab)
         {
             if (tab[j] > tab[j + 1])
             {
-                int savedValueFromElement = tab[j];
+                T savedValueFromElement = tab[j];
                 tab[j] = tab[j + 1];
                 tab[j + 1] = savedValueFromElement;
             }

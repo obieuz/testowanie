@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bubble_sort.cpp" />
+    <ClCompile Include="file_func.cpp" />
     <ClCompile Include="generate_array_func.cpp" />
     <ClCompile Include="generate_array_func.h" />
     <ClCompile Include="sorting_func.cpp" />
     <ClCompile Include="testing_func.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="file_func.h" />
     <ClInclude Include="sorting_func.h" />
     <ClInclude Include="testing_func.h" />
   </ItemGroup>
