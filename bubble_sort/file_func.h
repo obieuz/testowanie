@@ -6,9 +6,8 @@
 #include <sstream>
 #include "testing_func.h"
 
-void SaveToFilePerRecord(allDane data);
+void GenerateResults(daneContainer data);
 
-std::string GetFileContent(std::string filePath);
-
+void GenerateInputAndOutput(daneContainer data);
 
 #endif

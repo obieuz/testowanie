@@ -3,13 +3,14 @@
 template <typename T>
 void bubble_sort_for_for_index(size_t n, T* tab)
 {
+    T savedValueFromFirstArray;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n - 1; j++)
         {
             if (tab[i] < tab[j])
             {
-                T savedValueFromFirstArray = tab[i];
+                savedValueFromFirstArray = tab[i];
                 tab[i] = tab[j];
                 tab[j] = savedValueFromFirstArray;
             }
@@ -20,6 +21,7 @@ void bubble_sort_for_for_index(size_t n, T* tab)
 template <typename T>
 void bubble_sort_while_for_index(size_t n, T* tab)
 {
+    T savedValueFromElement;
     bool zamiana = true;
     while (zamiana)
     {
@@ -29,7 +31,7 @@ void bubble_sort_while_for_index(size_t n, T* tab)
             if (tab[i] > tab[i + 1])
             {
                 zamiana = true;
-                T savedValueFromElement = tab[i];
+                savedValueFromElement = tab[i];
                 tab[i] = tab[i + 1];
                 tab[i + 1] = savedValueFromElement;
             }
@@ -40,13 +42,14 @@ void bubble_sort_while_for_index(size_t n, T* tab)
 template <typename T>
 void bubble_sort_for_shorten_for_index(size_t n, T* tab)
 {
+    T savedValueFromElement;
     for (size_t i = 0; i < n; i++)
     {
         for (size_t j = 0; j < n - i - 1; j++)
         {
             if (tab[j] > tab[j + 1])
             {
-                T savedValueFromElement = tab[j];
+                savedValueFromElement = tab[j];
                 tab[j] = tab[j + 1];
                 tab[j + 1] = savedValueFromElement;
             }

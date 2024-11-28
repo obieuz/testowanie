@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-void SaveToFilePerRecord(allDane data) {
+void GenerateResults(daneContainer data) {
     std::string filePath = "C:\\Users\\robiz\\Desktop\\wyniki\\wyniki.txt";
 
     std::ofstream file(filePath);
@@ -19,6 +19,8 @@ void SaveToFilePerRecord(allDane data) {
         file << std::setw(timeWidth) << data.values[0].n[i];
     }
 
+    file << std::setw(timeWidth) << "CzyPosortowane";
+
     file << std::endl;
 
     for (int i = 0; i < data.values.size(); i++) {
@@ -26,27 +28,61 @@ void SaveToFilePerRecord(allDane data) {
         file << std::setw(timeWidth) << data.values[i].type;
 
         for (size_t j = 0; j < data.values[i].time.size(); ++j) {
-            file << std::setw(timeWidth) << data.values[i].time[j];
+            file << std::setw(timeWidth) << data.values[i].time[j] + "ms";
         }
+
+        file << data.values[i].isSorted;
 
         file << std::endl;
     }
-
-    
 }
 
-std::string GetFileContent(std::string filePath)
+void GenerateInputAndOutput(daneContainer data)
 {
-    std::ifstream file(filePath);
-    if (!file) {
-        std::cerr << "Could not open the file!" << std::endl;
-        return "Nie otwarto pliku";
+    const int nameWidth = 40;
+
+    std::string filePath = "C:\\Users\\robiz\\Desktop\\wyniki\\tablice[" + std::to_string(data.values[0].n[data.values[0].n.size() - 1]) + "].txt";
+
+    std::ofstream fileTablice(filePath);
+
+    const int tabWidth = 5;
+
+    for (int j = 0; j < data.values.size(); j++)
+    {
+        fileTablice << std::left << std::setw(nameWidth) << "Nazwa";
+        fileTablice << std::endl;
+
+        fileTablice << std::setw(nameWidth) << data.values[j].name;
+
+        fileTablice << std::endl;
+
+        fileTablice << std::left << std::setw(nameWidth) << "Typ";
+        fileTablice << std::endl;
+
+        fileTablice << std::setw(nameWidth) << data.values[j].type;
+
+        fileTablice << std::endl;
+
+        fileTablice << std::setw(nameWidth) << "Input";
+        fileTablice << std::endl;
+
+        for (int i = 0; i < data.values[j].input.size(); i++)
+        {
+            fileTablice << data.values[j].input[i];
+            fileTablice << " ";
+        }
+
+        fileTablice << std::endl;
+
+        fileTablice << std::setw(nameWidth) << "Output";
+        fileTablice << std::endl;
+
+        for (int i = 0; i < data.values[j].output.size(); i++)
+        {
+            fileTablice << data.values[j].output[i];
+            fileTablice << " ";
+        }
+
+        fileTablice << std::endl;
     }
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    std::string content = buffer.str();
-
-    file.close();
-    return content;
 }

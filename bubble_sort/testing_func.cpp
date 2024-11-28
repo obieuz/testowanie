@@ -47,45 +47,60 @@ void cout_array(size_t n, T* tab)
 }
 
 template <typename T>
-void przetestuj(void (*sorting_func)(size_t, T*), size_t n, const char* func_name)
+void przetestuj(void (*sorting_func)(size_t, T*), size_t n, std::string func_name, dane* data)
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
     T* tab = generate_array_by_rand<T>(n);
 
     if (check_if_sorted(n, tab))
     {
-        std::cout << "\nArray was already sorted";
+        std::cout << "\n" << func_name << " was already sorted"<<std::endl;
+        data->isSorted = false;
         return;
     }
+
+    for (int i = 0; i < n; i++)
+    {
+        data->input.push_back(std::to_string(tab[i]));
+    }
+
+    auto start = std::chrono::high_resolution_clock::now();
 
     sorting_func(n, tab);
 
     auto end = std::chrono::high_resolution_clock::now();
 
+    for (int j = 0; j < n; j++)
+    {
+        data->output.push_back(std::to_string(tab[j]));
+    }
+
     if (!check_if_sorted(n, tab))
     {
-        std::cout << std::endl << func_name << " is not sorted";
+        std::cout << std::endl << func_name << " is not sorted" << std::endl;
+        data->isSorted = false;
         return;
     }
+
+    data->isSorted = true;
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-    // std::cout<<"\nArray is sorted";
-    std::cout << std::endl << func_name << " : " << duration.count() << " milliseconds";
+    data->time.push_back(std::to_string(duration.count()));
 
-    // cout_array(n,tab);
+    std::cout << std::endl << func_name << " ilosc " << n << " Czas :" << duration.count() << " milliseconds" << " Typ : "<< data->type;
+
 }
 
 template <typename T>
 void przetestuj_z_tablica(void (*sorting_func)(size_t, T*), std::string func_name, size_t n, T* tab, dane* data)
 {
-    auto start = std::chrono::high_resolution_clock::now();
-
     if (check_if_sorted(n, tab))
     {
-        std::cout << "\nArray was already sorted";
+        std::cout << "\n" << func_name << " was already sorted"<<std::endl;
+        data->isSorted = false;
         return;
     }
+
+    auto start = std::chrono::high_resolution_clock::now();
 
     sorting_func(n, tab);
 
@@ -93,119 +108,53 @@ void przetestuj_z_tablica(void (*sorting_func)(size_t, T*), std::string func_nam
 
     if (!check_if_sorted(n, tab))
     {
-        std::cout << std::endl << func_name << " is not sorted";
+        std::cout << std::endl << func_name << " is not sorted" << std::endl;
+        data->isSorted = false;
         return;
     }
+    data->isSorted = true;
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
     data->time.push_back(std::to_string(duration.count()));
 
-    std::cout << std::endl << func_name << " ilosc " << n << " " << duration.count() << " milliseconds";
+    std::cout << std::endl << func_name << " ilosc " << n << " Czas :" << duration.count() << " milliseconds" << " Typ : "<< data->type;
 
 
 }
 
 template <typename T>
-void przetestuj_all(size_t n)
-{
-    std::cout << "\nArray length: " << n << std::endl;
-
-    przetestuj<T>(&bubble_sort_for_for_index<T>, n, FUNCTION_NAME(bubble_sort_for_for_index));
-    przetestuj<T>(&bubble_sort_for_for_pointer<T>, n, FUNCTION_NAME(bubble_sort_for_for_pointer));
-    przetestuj<T>(&bubble_sort_for_shorten_for_index<T>, n, FUNCTION_NAME(bubble_sort_for_shorten_for_index));
-    przetestuj<T>(&bubble_sort_for_shorten_for_pointer<T>, n, FUNCTION_NAME(bubble_sort_for_shorten_for_pointer));
-    przetestuj<T>(&bubble_sort_while_for_index<T>, n, FUNCTION_NAME(bubble_sort_while_for_index));
-    przetestuj<T>(&bubble_sort_while_for_pointer<T>, n, FUNCTION_NAME(bubble_sort_while_for_pointer));
-}
-
-template <typename T>
-void przetestuj_all_z_tablica(size_t n)
-{
-    //std::cout << "\nArray length: " << n << std::endl;
-
-    //T* tab = generate_array_by_rand<T>(n);
-    /*T* copied = new T[n];
-
-    std::string* fileContent = new std::string();
-
-    *fileContent += typeid(T).name();
-
-    *fileContent +=" | " + std::to_string(n) + " |\n";
-
-    copyArray(tab, copied, n);
-    *fileContent += FUNCTION_NAME(bubble_sort_for_for_pointer);
-    przetestuj_z_tablica<T>(&bubble_sort_for_for_pointer<T>, n, FUNCTION_NAME(bubble_sort_for_for_pointer), copied, fileContent);
-
-    copyArray(tab, copied, n);
-    *fileContent += FUNCTION_NAME(bubble_sort_for_for_index);
-    przetestuj_z_tablica<T>(&bubble_sort_for_for_index<T>, n, FUNCTION_NAME(bubble_sort_for_for_index), copied, fileContent);
-
-    copyArray(tab, copied, n);
-    *fileContent += FUNCTION_NAME(bubble_sort_for_shorten_for_index);
-    przetestuj_z_tablica<T>(&bubble_sort_for_shorten_for_index<T>, n, FUNCTION_NAME(bubble_sort_for_shorten_for_index), copied, fileContent);
-
-    copyArray(tab, copied, n);
-    *fileContent += FUNCTION_NAME(bubble_sort_for_shorten_for_pointer);
-    przetestuj_z_tablica<T>(&bubble_sort_for_shorten_for_pointer<T>, n, FUNCTION_NAME(bubble_sort_for_shorten_for_pointer), copied, fileContent);
-
-    copyArray(tab, copied, n);
-    *fileContent += FUNCTION_NAME(bubble_sort_while_for_index);
-    przetestuj_z_tablica<T>(&bubble_sort_while_for_index<T>, n, FUNCTION_NAME(bubble_sort_while_for_index), copied, fileContent);
-
-    copyArray(tab, copied, n);
-    *fileContent += FUNCTION_NAME(bubble_sort_while_for_pointer);
-    przetestuj_z_tablica<T>(&bubble_sort_while_for_pointer<T>, n, FUNCTION_NAME(bubble_sort_while_for_pointer), copied, fileContent);
-
-    std::cout <<std::endl <<*fileContent;
-
-    SaveToFile(fileContent);*/
-}
-
-template <typename T>
-dane przetestuj_z_tablica_rozne(void (*sorting_func)(size_t, T*), std::string func_name)
+dane przetestuj_z_tablica_rozne(void (*sorting_func)(size_t, T*), std::string func_name, std::vector<size_t> vector_n)
 {
     dane* data = new dane();
 
     data->name = func_name;
     data->type = typeid(T).name();
 
-    size_t n = 100;
-    data->n.push_back(n);
-    T* tab = generate_array_by_rand<T>(n);
-
-    przetestuj_z_tablica(sorting_func, func_name , n, tab, data);
-
-    n = 1000;
-    data->n.push_back(n);
-    tab = generate_array_by_rand<T>(n);
-
-    przetestuj_z_tablica(sorting_func,func_name, n, tab, data);
-
-    n = 10000;
-    data->n.push_back(n);
-    tab = generate_array_by_rand<T>(n);
-
-    przetestuj_z_tablica(sorting_func, func_name, n, tab, data);
-
+    for (int i = 0; i < vector_n.size(); i++)
+    {
+        size_t n = vector_n[i];
+        data->n.push_back(n);
+        przetestuj(sorting_func, n, func_name, data);
+    }
     return *data;
 }
 
 template <typename T>
-allDane przetestuj_z_typem_roznie()
+daneContainer przetestuj_z_typem_roznie(std::vector<size_t> vector_n)
 {
-    allDane dane;
+    daneContainer dane;
 
-    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_for_index, FUNCTION_NAME(bubble_sort_for_for_index)));
+    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_for_index, FUNCTION_NAME(bubble_sort_for_for_index), vector_n));
 
-    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_for_pointer, FUNCTION_NAME(bubble_sort_for_for_pointer)));
+    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_for_pointer, FUNCTION_NAME(bubble_sort_for_for_pointer), vector_n));
 
-    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_shorten_for_index, FUNCTION_NAME(bubble_sort_for_shorten_for_index)));
+    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_shorten_for_index, FUNCTION_NAME(bubble_sort_for_shorten_for_index), vector_n));
 
-    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_shorten_for_pointer, FUNCTION_NAME(bubble_sort_for_shorten_for_pointer)));
+    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_for_shorten_for_pointer, FUNCTION_NAME(bubble_sort_for_shorten_for_pointer), vector_n));
 
-    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_while_for_index, FUNCTION_NAME(bubble_sort_while_for_index)));
+    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_while_for_index, FUNCTION_NAME(bubble_sort_while_for_index), vector_n));
 
-    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_while_for_pointer, FUNCTION_NAME(bubble_sort_while_for_pointer)));
+    dane.values.push_back(przetestuj_z_tablica_rozne<T>(&bubble_sort_while_for_pointer, FUNCTION_NAME(bubble_sort_while_for_pointer), vector_n));
 
     return dane;
 }

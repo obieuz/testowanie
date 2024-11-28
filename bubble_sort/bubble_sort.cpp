@@ -3,15 +3,22 @@
 
 int main()
 {
-    allDane dane;
+    daneContainer dane;
 
-    dane = przetestuj_z_typem_roznie<int>();
+    std::vector<size_t> vector_n;
+    vector_n.push_back(100);
+    vector_n.push_back(1000);
+    vector_n.push_back(500);
 
-    auto dane_float = przetestuj_z_typem_roznie<float>().values;
+    dane = przetestuj_z_typem_roznie<int>(vector_n);
+
+    auto dane_float = przetestuj_z_typem_roznie<float>(vector_n).values;
 
     dane.values.insert(dane.values.begin(),dane_float.begin(),dane_float.end());
 
-    SaveToFilePerRecord(dane);
+    GenerateResults(dane);
+
+    GenerateInputAndOutput(dane);
 
     return 0;
 }
