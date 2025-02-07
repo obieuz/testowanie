@@ -86,7 +86,7 @@ void przetestuj(void (*sorting_func)(size_t, T*), size_t n, std::string func_nam
 
     data->time.push_back(std::to_string(duration.count()));
 
-    std::cout << std::endl << func_name << " ilosc " << n << " Czas :" << duration.count() << " milliseconds" << " Typ : "<< data->type;
+    std::cout << std::endl << "Nazwa: " << func_name << ", Ilosc: " << n << ", Czas: " << duration.count() << "ms" << ", Typ: " << data->type;
 
 }
 
@@ -117,7 +117,7 @@ void przetestuj_z_tablica(void (*sorting_func)(size_t, T*), std::string func_nam
 
     data->time.push_back(std::to_string(duration.count()));
 
-    std::cout << std::endl << func_name << " ilosc " << n << " Czas :" << duration.count() << " milliseconds" << " Typ : "<< data->type;
+    std::cout << std::endl << func_name << " ilosc " << n << " Czas: " << duration.count() << " milliseconds" << " Typ: "<< data->type;
 
 
 }
